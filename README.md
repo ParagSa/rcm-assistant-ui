@@ -1,59 +1,137 @@
-# RcmAssistantUi
+# RCM Assistant UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.20.
+This project is the Angular front-end for an RCM (Revenue Cycle Management) denial assistance chatbot. It provides a chat experience where users can ask about denial codes, appeal guidance, and denial-related documentation, and it sends those requests to a backend API for processing.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+The application includes a single chat screen with:
 
-```bash
-ng serve
-```
+- a welcome prompt for denial-related questions
+- a message history for user + assistant exchanges
+- a textarea input for submitting questions
+- auto-scrolling as new messages are added
+- a session-based request payload to the backend
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The UI is built with Angular 21 and communicates with a locally running API on `http://localhost:8000/chat`.
 
-## Code scaffolding
+## Tech stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular 21
+- TypeScript
+- RxJS
+- Angular Router
+- Angular Forms
+- Vitest (available in the project tooling)
 
-```bash
-ng generate component component-name
-```
+## Prerequisites
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Before running the project, make sure you have:
 
-```bash
-ng generate --help
-```
+- Node.js 20 or newer
+- npm 10 or newer
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Installation
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
+## Running the app
 
-For end-to-end (e2e) testing, run:
+Start the Angular development server:
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Then open:
 
-## Additional Resources
+```text
+http://localhost:4200/
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The app expects the backend assistant API to be running locally on port 8000.
+
+## Backend contract
+
+The UI posts chat messages using this payload shape:
+
+```json
+{
+  "session_id": "<generated-uuid>",
+  "message": "What does CO-97 mean?"
+}
+```
+
+The request is sent to:
+
+```text
+http://localhost:8000/chat
+```
+
+The response is expected to include:
+
+```json
+{
+  "reply": "<assistant response text>"
+}
+```
+
+## Available scripts
+
+```bash
+npm start
+npm run build
+npm test
+```
+
+### Common commands
+
+Start development server:
+
+```bash
+npm start
+```
+
+Build production bundle:
+
+```bash
+npm run build
+```
+
+Run tests:
+
+```bash
+npm test
+```
+
+## Project structure
+
+```text
+rcm-assistant-ui/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   └── chat-component/
+│   │   ├── services/
+│   │   ├── app.routes.ts
+│   │   ├── app.ts
+│   │   └── app.html
+│   ├── main.ts
+│   └── styles.scss
+├── angular.json
+├── package.json
+├── tsconfig.json
+├── README.md
+└── public/
+```
+
+## Notes
+
+- The app is designed as a front-end only repository and depends on a separate backend assistant service.
+- If the backend is not running on port 8000, the chat will show an error message instead of a response.
+- The frontend uses a single route with the chat component as the default landing page.
+
+## License
+
+This project does not currently declare a project license.
