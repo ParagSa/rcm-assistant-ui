@@ -1,0 +1,35 @@
+<p>chat-component works!</p>
+<div class="chat-container">
+  <header class="chat-header">
+    <h1>RCM Denial Management Assistant</h1>
+    <p>Ask about a denial code, appeal guidance, or request a draft appeal letter</p>
+  </header>
+
+  <div class="message-list">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [ngClass]="msg.role"
+    >
+      <div class="bubble">{{ msg.content }}</div>
+    </div>
+
+    <div class="message assistant" *ngIf="isLoading">
+      <div class="bubble typing">Thinking…</div>
+    </div>
+
+    <div #scrollAnchor></div>
+  </div>
+
+  <div class="input-bar">
+    <textarea
+      [(ngModel)]="currentMessage"
+      (keydown)="onKeyDown($event)"
+      placeholder="e.g. What does CO-97 mean?"
+      rows="1"
+    ></textarea>
+    <button (click)="sendMessage()" [disabled]="isLoading || !currentMessage.trim()">
+      Send
+    </button>
+  </div>
+</div>
